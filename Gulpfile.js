@@ -1,9 +1,12 @@
 const { series, parallel, src, dest } = require('gulp')
 var gulp = require('gulp')
-var sass = require('gulp-sass')
-sass.compiler = require('node-sass')
+var sass = require('gulp-sass')(require('node-sass'))
+var sassCompiler = require('node-sass')
 var del = require('del')
-var browserSync = require("browser-sync").create();
+
+//var del = import { deleteSync } from 'del'
+
+browserSync = require("browser-sync").create();
 
 function clean() {
 	return del('static/**')

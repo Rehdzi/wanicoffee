@@ -21,7 +21,8 @@ SECRET_FILE = "./deploy-configs/secret"
 
 
 def initialize_db():
-    db.create_all()
+    with app.app_context():
+        db.create_all()
 
 
 def grab_settings():

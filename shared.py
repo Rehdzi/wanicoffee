@@ -12,13 +12,13 @@ import jinja_cache
 
 
 class ManiwaniApp(Flask):
-    jinja_options = ImmutableDict(extensions=["jinja2.ext.autoescape", "jinja2.ext.with_"],
+    jinja_options = ImmutableDict(extensions=[],
                                   bytecode_cache=jinja_cache.KeystoreCache())
 
     
 app = ManiwaniApp(__name__, static_url_path='')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/test.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = "./uploads"
 app.config["THUMB_FOLDER"] = os.path.join(app.config["UPLOAD_FOLDER"], "thumbs")
@@ -33,6 +33,8 @@ app.json_encoder = CustomJSONEncoder
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 rest_api = Api(app)
+
+app.app_context().push()
 
 SECRET_FILE = "./deploy-configs/secret"
 def get_secret():

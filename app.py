@@ -21,14 +21,18 @@ from resources import (
 )
 from shared import app, rest_api
 
+
 app.register_blueprint(main_blueprint, url_prefix="/")
 app.register_blueprint(boards_blueprint, url_prefix="/boards")
 app.register_blueprint(theme_blueprint, url_prefix="/theme")
 app.register_blueprint(threads_blueprint, url_prefix="/threads")
 app.register_blueprint(upload_blueprint, url_prefix="/upload")
-app.register_blueprint(slip_blueprint, url_prefix="/slip")
+
 if app.config["SERVE_STATIC"]:
     app.register_blueprint(slip_blueprint, url_prefix="/static")
+else:
+    app.register_blueprint(slip_blueprint, url_prefix="/slip")
+
 
 if app.config["SERVE_REST"]:
     rest_api.add_resource(BoardListResource, "/api/v1/boards/")

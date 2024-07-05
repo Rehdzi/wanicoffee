@@ -1,7 +1,7 @@
 import re
 from markdown import Extension
 from markdown.inlinepatterns import Pattern
-from markdown.util import etree
+from lxml import etree
 
 class SpoilerPattern(Pattern):
     _SPOILER_REGEXP = r"\|\|(.+)\|\|"

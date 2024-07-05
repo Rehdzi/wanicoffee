@@ -2,7 +2,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from xml import etree
 
 from flask import url_for
-from markdown.util import etree
+from lxml import etree
 from markdown.inlinepatterns import Pattern
 
 import cache

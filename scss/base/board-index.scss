@@ -1,5 +1,5 @@
 .board-label {
-	@extend .text-dark;
+// 	@extend .text-dark;
 	font-size: 4em;
 	position: absolute;
 	top: 50%;
@@ -8,7 +8,7 @@
 }
 
 .board-entry {
-	@extend .media-element;
+// 	@extend .media-element;
 	position: relative;
 	background-color: var(--gray);
 	background-blend-mode: screen;

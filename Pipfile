@@ -15,7 +15,7 @@ psycopg2-binary = "*"
 flask-migrate = "*"
 requests = "*"
 bleach = "*"
-gevent = "==1.5.0"
+gevent = "*"
 redis = "*"
 psycogreen = "*"
 

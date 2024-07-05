@@ -1,7 +1,7 @@
 import re
 from markdown import Extension
 from markdown.inlinepatterns import Pattern
-from markdown.util import etree
+from lxml import etree
 
 class SpacingPattern(Pattern):
     _SPACING_REGEXP = r"(\r\n|\n)(?!(\r\n|\n)+)"
