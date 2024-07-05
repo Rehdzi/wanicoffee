@@ -3,17 +3,17 @@
 # dev mode - file storage backend, sqlite, no nginx, etc.
 if [ $1 = "devmode" ]; then
 	# start up internal pubsub server
-	python3 storestub.py &
+	pipenv run python storestub.py &
 	# start up react sidecar
-	/maniwani-frontend/devmode-entrypoint.sh &
-	uwsgi --ini ./deploy-configs/uwsgi-devmode.ini
+	sh /maniwani-frontend/devmode-entrypoint.sh &
+	pipenv run uwsgi --ini ./deploy-configs/uwsgi-devmode.ini
 # attempting to bootstrap?
 elif [ $1 = "bootstrap" ]; then
-	python3 bootstrap.py
+	pipenv run python bootstrap.py
 # version upgrade?
 elif [ $1 = "update" ]; then
-	python3 update.py
+	pipenv run python update.py
 # running normal production mode startup
 else
-	uwsgi --ini ./deploy-configs/uwsgi.ini
+	pipenv run uwsgi --ini ./deploy-configs/uwsgi.ini
 fi

@@ -1,4 +1,4 @@
 #!/bin/sh
 
-cd /maniwani-frontend
-node server.js
+#cd /maniwani-frontend
+node /maniwani-frontend/server.js

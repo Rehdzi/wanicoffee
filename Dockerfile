@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # backend dependencies/frontend depndencies/uwsgi, python and associated plugins
 RUN apt-get update && apt-get -y --no-install-recommends install curl python3 python3-pip \
 	pipenv uwsgi-core uwsgi-plugin-python3 uwsgi-plugin-gevent-python3 \
-    python3-gevent
+    python3-gevent build-essential libssl-dev libffi-dev python3-setuptools
 
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get -y --no-install-recommends install nodejs
