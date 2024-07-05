@@ -21,6 +21,9 @@ SECRET_FILE = "./deploy-configs/secret"
 
 
 def initialize_db():
+    engine = db.create_engine("postgresql://postgres:SoundsLikeShit@localhost:5432/wanicoffee", echo=True)
+    engine.connect()
+    #conn = engine.connect()
     with app.app_context():
         db.create_all()
 
@@ -92,6 +95,8 @@ def save_db():
 
 
 def main():
+
+
     initialize_db()
     settings = grab_settings()
     setup_boards(settings)

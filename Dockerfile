@@ -1,20 +1,23 @@
-FROM ubuntu:20.04 AS dev
+FROM ubuntu:latest AS dev
 WORKDIR /maniwani
 ENV DEBIAN_FRONTEND=noninteractive
 # backend dependencies/frontend depndencies/uwsgi, python and associated plugins
 RUN apt-get update && apt-get -y --no-install-recommends install python3 python3-pip \
-	pipenv uwsgi-core uwsgi-plugin-python3 uwsgi-plugin-gevent-python3 python3-gevent nodejs npm
+	pipenv uwsgi-core uwsgi-plugin-python3 uwsgi-plugin-gevent-python3 \
+    python3-gevent nodejs npm
 # install static build of ffmpeg and compress with upx
-COPY build-helpers/ffmpeg_bootstrap.py /maniwani/build-helpers/
-WORKDIR /maniwani/build-helpers
-RUN python3 ffmpeg_bootstrap.py && apt-get -y install upx-ucl && \
-	chmod +w ../ffmpeg/ffmpeg && \
-	upx -9 ../ffmpeg/ffmpeg && apt-get autoremove -y upx-ucl && \
-	rm -rf /var/lib/apt/lists/*
+
+#COPY build-helpers/ffmpeg_bootstrap.py /maniwani/build-helpers/
+#WORKDIR /maniwani/build-helpers
+#RUN python3 ffmpeg_bootstrap.py && apt-get -y install upx-ucl && \
+#	chmod +w ../ffmpeg/ffmpeg && \
+#	upx -9 ../ffmpeg/ffmpeg && apt-get autoremove -y upx-ucl && \
+#	rm -rf /var/lib/apt/lists/*
 WORKDIR /maniwani
 COPY Pipfile /maniwani
 COPY Pipfile.lock /maniwani
-RUN pipenv install --system --deploy
+
+RUN pipenv install --deploy
 # point MANIWANI_CFG to the devmode config file
 ENV MANIWANI_CFG=./deploy-configs/devmode.cfg
 # build static frontend files
