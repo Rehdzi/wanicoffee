@@ -1,16 +1,18 @@
 FROM ubuntu:latest AS dev
 WORKDIR /maniwani
 ENV DEBIAN_FRONTEND=noninteractive
-# backend dependencies/frontend depndencies/uwsgi, python and associated plugins
+# backend dependencies/frontend depndencies/uwsgi, pgsql, python and associated plugins
 RUN apt-get update && apt-get -y --no-install-recommends install curl python3 python3-pip \
 	pipenv uwsgi-core uwsgi-plugin-python3 uwsgi-plugin-gevent-python3 \
-    python3-gevent build-essential libssl-dev libffi-dev python3-setuptools
+    python3-gevent build-essential libssl-dev libffi-dev python3-setuptools \
+    postgresql postgresql-contrib
 
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get -y --no-install-recommends install nodejs
 
-RUN node -v && npm -v
+
 # install static build of ffmpeg and compress with upx
+
 
 COPY build-helpers/ffmpeg_bootstrap.py /maniwani/build-helpers/
 WORKDIR /maniwani/build-helpers
@@ -45,6 +47,20 @@ COPY frontend/devmode-entrypoint.sh /maniwani-frontend
 RUN mkdir -p /maniwani/static/js
 RUN cp /maniwani-frontend/build/client-bundle/*.js /maniwani/static/js/
 # copy source files over
+
+RUN rm /etc/postgresql/16/main/postgresql.conf
+RUN rm /etc/postgresql/16/main/pg_hba.conf
+COPY build-helpers/postgresql.conf /etc/postgresql/16/main/
+COPY build-helpers/pg_hba.conf /etc/postgresql/16/main/
+
+COPY build-helpers/pg_init.sh /maniwani/build-helpers/
+WORKDIR /maniwani/build-helpers
+USER postgres
+RUN sh ./pg_init.sh
+
+USER root
+
+
 WORKDIR /maniwani
 COPY migrations /maniwani/migrations
 COPY *.py /maniwani/
@@ -56,7 +72,8 @@ COPY resources /maniwani/resources
 COPY templates /maniwani/templates
 COPY ./build-helpers/docker-entrypoint.sh ./docker-entrypoint.sh
 # bootstrap dev image
-# RUN pipenv run python bootstrap.py
+
+RUN pipenv run python bootstrap.py
 EXPOSE 5000
 
 ENTRYPOINT ["sh", "./docker-entrypoint.sh", "devmode"]

@@ -42,6 +42,7 @@ flask-restful = "*"
 flask-migrate = "*"
 psycopg2-binary = "*"
 psycogreen = "*"
+sqlalchemy-utils = "*"
 
 [dev-packages]
 

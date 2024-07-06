@@ -18,7 +18,7 @@ class ManiwaniApp(Flask):
     
 app = ManiwaniApp(__name__, static_url_path='')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-#app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:SoundsLikeShit@localhost/maniwani"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["UPLOAD_FOLDER"] = "./uploads"
 app.config["THUMB_FOLDER"] = os.path.join(app.config["UPLOAD_FOLDER"], "thumbs")

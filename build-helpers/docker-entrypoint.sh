@@ -2,6 +2,8 @@
 
 # dev mode - file storage backend, sqlite, no nginx, etc.
 if [ $1 = "devmode" ]; then
+  # start PostgreSQL server
+  service postgresql start &
 	# start up internal pubsub server
 	pipenv run python storestub.py &
 	# start up react sidecar
@@ -15,5 +17,6 @@ elif [ $1 = "update" ]; then
 	pipenv run python update.py
 # running normal production mode startup
 else
+  service postgresql start &
 	pipenv run uwsgi --ini ./deploy-configs/uwsgi.ini
 fi

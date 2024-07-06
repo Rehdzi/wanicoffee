@@ -14,16 +14,30 @@ from model.Tag import Tag
 from model.Media import storage
 from shared import app, db
 
+from sqlalchemy_utils import database_exists, create_database
 
 MIGRATION_DIR = "./migrations"
 BOOTSTRAP_SETTINGS = "./deploy-configs/bootstrap-config.json"
 SECRET_FILE = "./deploy-configs/secret"
 
+import os
+
+os.system("service postgresql start")
+
+# def create_pg_user():
+#     from sqlalchemy.sql import text, quoted_name
+#
+#     DATABASE_USER = "maniwani"
+#     DATABASE_USER_PASSWORD = "SoundsLikeShit"
+#
+#     create_user_sql = text(f"CREATE USER {quoted_name(DATABASE_USER, False)} WITH PASSWORD :database_password")
 
 def initialize_db():
-    engine = db.create_engine("postgresql://postgres:SoundsLikeShit@localhost:5432/wanicoffee", echo=True)
-    engine.connect()
-    #conn = engine.connect()
+    # engine = db.create_engine("postgresql://root@127.0.0.1:6666", echo=True)
+    # # if not database_exists("postgresql://root@localhost:5432/maniwani"):
+    # #     create_database("postgresql://root@localhost:5432/maniwani")
+    # engine.connect()
+    # #conn = engine.connect()
     with app.app_context():
         db.create_all()
 
